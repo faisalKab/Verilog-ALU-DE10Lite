@@ -1,0 +1,135 @@
+module Lab4(SW8, SW7, SW6, SW5, SW4, SW3, SW2, SW1, SW0, HEX2, HEX1, HEX0);
+
+input SW8, SW7, SW6, SW5, SW4, SW3, SW2, SW1, SW0;
+output HEX2, HEX1, HEX0;
+
+wire signed [8:0] a;
+wire signed [2:0] z;
+
+assign a = {SW8, SW7, SW6, SW5, SW4, SW3, SW2, SW1, SW0};
+
+Lab4ALU mine(z, a);
+
+always@(z)
+begin
+
+HEX2 <= z[2]; 
+//HEX2[2] <= z[2];
+HEX1 <= z[1];
+//HEX1[2] <= z[1];
+HEX0 <= z[0];
+//HEX0[2] <= z[0];
+
+end
+
+endmodule
+
+
+//*****************************************************************************//
+module Lab4ALU(output1, input1);
+
+input [8:0] input1;
+output [2:0] output1;
+wire [2:0] temp1, temp2, temp3, temp4, b, a, op, outMux;
+wire condition, cout;
+
+assign b[2:0] = input1[2:0];
+assign a[2:0] = input1[5:3];
+assign op[2:0] = input1[8:6];
+	
+	or  myOr[2:0]   (temp1, a, b);
+	xor myXor[2:0]  (temp2, a, b);
+	and myAnd[2:0]  (temp3, a, b);
+
+	yArith myArith(temp4, cout, a, b, op[2]);							//op[2] is only cared by the mux for selecting add or sub... op[2] = 0 means add... op[2] = 1 means sub
+	yMux4to1 my_mux(outMux, temp1, temp2, temp3, temp4, op[1:0]);		//op[1:0](0-3) is only cared by ymux4to1 because there are four states
+
+	yMux Mux_For_Add_or_Sub(output1, outMux, temp4, op[2]);
+
+	//module yArith(z, cout, a, b, ctrl); 
+
+endmodule
+//*****************************************************************************//
+module yMux4to1(z, a0, a1, a2, a3, op);
+
+output [2:0] z;
+input  [2:0] a3, a2, a1, a0;
+input  [1:0] op;
+
+wire [2:0] temp1, temp2;
+
+	yMux firstHalf(temp1, a0, a1, op[1]);
+	yMux secondHalf(temp2, a2, a3, op[1]);
+	yMux finalRight(z, temp1, temp2, op[0]);
+
+endmodule
+//*****************************************************************************//
+module yMux(z, a, b, c);
+
+parameter SIZE = 3;
+
+output [SIZE-1:0] z;
+input [SIZE-1:0] a, b;
+input c;
+
+	yMux1 mine[SIZE-1:0](z, a, b, c);			 //this how much times you are calling the 1bit multiplexer. NOT twice, that was just the two bit example. understood.
+											
+endmodule
+//*****************************************************************************//
+module yMux1(z, a, b, c);
+
+output z;
+input a, b, c;
+wire notC, upper, lower;
+
+not my_not(notC, c);
+and upperAnd(upper, a, notC);
+and lowerAnd(lower, b, c);
+or my_or(z, upper, lower);
+
+endmodule
+//*****************************************************************************//
+module yAdder1(z, cout, a, b, cin);
+
+output z, cout;
+input a, b, cin;
+
+	xor left_xor(tmp, a, b);
+	xor right_xor(z, cin, tmp);
+	and left_and(outL, a, b);
+	and right_and(outR, tmp, cin);
+	or my_or(cout, outR, outL);
+
+endmodule
+//*****************************************************************************//
+module yAdder(z, cout, a, b, cin);
+output [2:0] z;							//not an interation of 32 times, but think instantiation. it does it to all bits of z
+output cout;
+input [2:0] a, b;
+input cin;
+wire[2:0] in, out;
+
+	yAdder1 mine[2:0](z, out, a, b, in);   //calls it 31 times iterating from 0 - 11th bit
+
+	assign in[0]  = cin;
+	assign in[1]  = out[0];
+	assign in[2]  = out[1];					//use cout to see if it is overflow
+	assign cout   = out[2];	
+
+endmodule
+//*****************************************************************************//
+module yArith(z, cout, a, b, ctrl); 
+output [2:0] z;
+output cout;
+
+input [2:0] a, b;
+input ctrl;
+
+wire[2:0] notB, tmpB;
+
+    not c_not[2:0](notB, b);						//not b for subtracting method + 1
+    yMux my_mux(tmpB, b, notB, ctrl);				//if we should use notB or b depending on ctrl. ctrl = 1 selects notB                          
+    yAdder my_add(z, cout, a, tmpB, ctrl);			//if ctrl 0, add and no carryIn. if 1, subtract and use the 1 to add it to the invert by carryIn
+	
+endmodule
+//*****************************************************************************//

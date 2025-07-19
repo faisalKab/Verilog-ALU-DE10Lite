@@ -1,0 +1,344 @@
+|Lab4
+SW[0] => a[0].IN1
+SW[1] => a[1].IN1
+SW[2] => a[2].IN1
+SW[3] => a[3].IN1
+SW[4] => a[4].IN1
+SW[5] => a[5].IN1
+SW[6] => a[6].IN1
+SW[7] => a[7].IN1
+SW[8] => a[8].IN1
+HEX5[5] << <VCC>
+HEX5[6] << HEX5.DB_MAX_OUTPUT_PORT_TYPE
+HEX4[0] << HEX4.DB_MAX_OUTPUT_PORT_TYPE
+HEX4[1] << HEX4.DB_MAX_OUTPUT_PORT_TYPE
+HEX4[2] << HEX4.DB_MAX_OUTPUT_PORT_TYPE
+HEX4[3] << HEX4.DB_MAX_OUTPUT_PORT_TYPE
+HEX4[4] << HEX4.DB_MAX_OUTPUT_PORT_TYPE
+HEX4[5] << HEX4.DB_MAX_OUTPUT_PORT_TYPE
+HEX4[6] << HEX4.DB_MAX_OUTPUT_PORT_TYPE
+HEX3[0] << OpErrorCode.DB_MAX_OUTPUT_PORT_TYPE
+HEX3[1] << <VCC>
+HEX3[2] << <VCC>
+HEX3[3] << OpErrorCode.DB_MAX_OUTPUT_PORT_TYPE
+HEX3[4] << OpErrorCode.DB_MAX_OUTPUT_PORT_TYPE
+HEX3[5] << OpErrorCode.DB_MAX_OUTPUT_PORT_TYPE
+HEX3[6] << OpErrorCode.DB_MAX_OUTPUT_PORT_TYPE
+HEX2[0] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX2[1] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX2[2] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX2[3] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX2[4] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX2[5] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX2[6] << <VCC>
+HEX1[0] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX1[1] << HEX1.DB_MAX_OUTPUT_PORT_TYPE
+HEX1[2] << HEX1.DB_MAX_OUTPUT_PORT_TYPE
+HEX1[3] << <VCC>
+HEX1[4] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX1[5] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX1[6] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX0[0] << <VCC>
+HEX0[1] << HEX0.DB_MAX_OUTPUT_PORT_TYPE
+HEX0[2] << HEX0.DB_MAX_OUTPUT_PORT_TYPE
+HEX0[3] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX0[4] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX0[5] << HEX2.DB_MAX_OUTPUT_PORT_TYPE
+HEX0[6] << <VCC>
+
+
+|Lab4|Lab4ALU:mine
+output1[0] <= yMux:Mux_For_Add_or_Sub.port0
+output1[1] <= yMux:Mux_For_Add_or_Sub.port0
+output1[2] <= yMux:Mux_For_Add_or_Sub.port0
+cout <= yArith:myArith.port1
+overFlowDetection <= overFlowDetection.DB_MAX_OUTPUT_PORT_TYPE
+input1[0] => b[0].IN1
+input1[1] => b[1].IN1
+input1[2] => b[2].IN1
+input1[3] => a[0].IN1
+input1[4] => a[1].IN1
+input1[5] => a[2].IN1
+input1[6] => op[0].IN1
+input1[7] => op[1].IN1
+input1[8] => op[2].IN2
+
+
+|Lab4|Lab4ALU:mine|yArith:myArith
+z[0] <= yAdder:my_add.port0
+z[1] <= yAdder:my_add.port0
+z[2] <= yAdder:my_add.port0
+cout <= yAdder:my_add.port1
+overflow <= yAdder:my_add.port2
+a[0] => a[0].IN1
+a[1] => a[1].IN1
+a[2] => a[2].IN1
+b[0] => b[0].IN1
+b[1] => b[1].IN1
+b[2] => b[2].IN1
+ctrl => ctrl.IN2
+
+
+|Lab4|Lab4ALU:mine|yArith:myArith|yMux:my_mux
+z[0] <= yMux1:mine[0].z
+z[1] <= yMux1:mine[1].z
+z[2] <= yMux1:mine[2].z
+a[0] => yMux1:mine[0].a
+a[1] => yMux1:mine[1].a
+a[2] => yMux1:mine[2].a
+b[0] => yMux1:mine[0].b
+b[1] => yMux1:mine[1].b
+b[2] => yMux1:mine[2].b
+c => yMux1:mine[0].c
+c => yMux1:mine[1].c
+c => yMux1:mine[2].c
+
+
+|Lab4|Lab4ALU:mine|yArith:myArith|yMux:my_mux|yMux1:mine[0]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yArith:myArith|yMux:my_mux|yMux1:mine[1]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yArith:myArith|yMux:my_mux|yMux1:mine[2]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yArith:myArith|yAdder:my_add
+z[0] <= yAdder1:mine[0].z
+z[1] <= yAdder1:mine[1].z
+z[2] <= yAdder1:mine[2].z
+cout <= yAdder1:mine[2].cout
+overflow <= overflow.DB_MAX_OUTPUT_PORT_TYPE
+a[0] => yAdder1:mine[0].a
+a[1] => yAdder1:mine[1].a
+a[2] => yAdder1:mine[2].a
+b[0] => yAdder1:mine[0].b
+b[1] => yAdder1:mine[1].b
+b[2] => yAdder1:mine[2].b
+cin => yAdder1:mine[0].cin
+
+
+|Lab4|Lab4ALU:mine|yArith:myArith|yAdder:my_add|yAdder1:mine[0]
+z <= right_xor.DB_MAX_OUTPUT_PORT_TYPE
+cout <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => left_xor.IN0
+a => left_and.IN0
+b => left_xor.IN1
+b => left_and.IN1
+cin => right_xor.IN1
+cin => right_and.IN1
+
+
+|Lab4|Lab4ALU:mine|yArith:myArith|yAdder:my_add|yAdder1:mine[1]
+z <= right_xor.DB_MAX_OUTPUT_PORT_TYPE
+cout <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => left_xor.IN0
+a => left_and.IN0
+b => left_xor.IN1
+b => left_and.IN1
+cin => right_xor.IN1
+cin => right_and.IN1
+
+
+|Lab4|Lab4ALU:mine|yArith:myArith|yAdder:my_add|yAdder1:mine[2]
+z <= right_xor.DB_MAX_OUTPUT_PORT_TYPE
+cout <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => left_xor.IN0
+a => left_and.IN0
+b => left_xor.IN1
+b => left_and.IN1
+cin => right_xor.IN1
+cin => right_and.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux
+z[0] <= yMux:finalRight.port0
+z[1] <= yMux:finalRight.port0
+z[2] <= yMux:finalRight.port0
+a0[0] => a0[0].IN1
+a0[1] => a0[1].IN1
+a0[2] => a0[2].IN1
+a1[0] => a1[0].IN1
+a1[1] => a1[1].IN1
+a1[2] => a1[2].IN1
+a2[0] => a2[0].IN1
+a2[1] => a2[1].IN1
+a2[2] => a2[2].IN1
+a3[0] => a3[0].IN1
+a3[1] => a3[1].IN1
+a3[2] => a3[2].IN1
+op[0] => op[0].IN1
+op[1] => op[1].IN2
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:firstHalf
+z[0] <= yMux1:mine[0].z
+z[1] <= yMux1:mine[1].z
+z[2] <= yMux1:mine[2].z
+a[0] => yMux1:mine[0].a
+a[1] => yMux1:mine[1].a
+a[2] => yMux1:mine[2].a
+b[0] => yMux1:mine[0].b
+b[1] => yMux1:mine[1].b
+b[2] => yMux1:mine[2].b
+c => yMux1:mine[0].c
+c => yMux1:mine[1].c
+c => yMux1:mine[2].c
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:firstHalf|yMux1:mine[0]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:firstHalf|yMux1:mine[1]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:firstHalf|yMux1:mine[2]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:secondHalf
+z[0] <= yMux1:mine[0].z
+z[1] <= yMux1:mine[1].z
+z[2] <= yMux1:mine[2].z
+a[0] => yMux1:mine[0].a
+a[1] => yMux1:mine[1].a
+a[2] => yMux1:mine[2].a
+b[0] => yMux1:mine[0].b
+b[1] => yMux1:mine[1].b
+b[2] => yMux1:mine[2].b
+c => yMux1:mine[0].c
+c => yMux1:mine[1].c
+c => yMux1:mine[2].c
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:secondHalf|yMux1:mine[0]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:secondHalf|yMux1:mine[1]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:secondHalf|yMux1:mine[2]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:finalRight
+z[0] <= yMux1:mine[0].z
+z[1] <= yMux1:mine[1].z
+z[2] <= yMux1:mine[2].z
+a[0] => yMux1:mine[0].a
+a[1] => yMux1:mine[1].a
+a[2] => yMux1:mine[2].a
+b[0] => yMux1:mine[0].b
+b[1] => yMux1:mine[1].b
+b[2] => yMux1:mine[2].b
+c => yMux1:mine[0].c
+c => yMux1:mine[1].c
+c => yMux1:mine[2].c
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:finalRight|yMux1:mine[0]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:finalRight|yMux1:mine[1]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux4to1:my_mux|yMux:finalRight|yMux1:mine[2]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux:Mux_For_Add_or_Sub
+z[0] <= yMux1:mine[0].z
+z[1] <= yMux1:mine[1].z
+z[2] <= yMux1:mine[2].z
+a[0] => yMux1:mine[0].a
+a[1] => yMux1:mine[1].a
+a[2] => yMux1:mine[2].a
+b[0] => yMux1:mine[0].b
+b[1] => yMux1:mine[1].b
+b[2] => yMux1:mine[2].b
+c => yMux1:mine[0].c
+c => yMux1:mine[1].c
+c => yMux1:mine[2].c
+
+
+|Lab4|Lab4ALU:mine|yMux:Mux_For_Add_or_Sub|yMux1:mine[0]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux:Mux_For_Add_or_Sub|yMux1:mine[1]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
+|Lab4|Lab4ALU:mine|yMux:Mux_For_Add_or_Sub|yMux1:mine[2]
+z <= my_or.DB_MAX_OUTPUT_PORT_TYPE
+a => upperAnd.IN0
+b => lowerAnd.IN0
+c => lowerAnd.IN1
+c => upperAnd.IN1
+
+
