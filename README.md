@@ -3,6 +3,7 @@
 This ALU was implemented using **pure gate-level logic in Verilog**.  
 No behavioral code, no `if` statements, no LUTs — only raw logic gates and multiplexers.
 I went above and beyond by hardcoding everything using logic expressions instead of software-style conditionals.
+Please find the code in .sv file
 
 Designed for the Altera **DE10-Lite FPGA** board.
 
